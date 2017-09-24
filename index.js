@@ -30,8 +30,8 @@ module.exports = {
   blocks: {
     plantuml: {
       process: function (block) {
-        var defaultFormat = this.generator == 'ebook'? '.png' : '.svg';
-        var outputFormat = this.generator == 'ebook'? '-tpng' : '-tsvg';
+        var defaultFormat = this.output.name == 'ebook'? '.png' : '.svg';
+        var outputFormat = this.output.name == 'ebook'? '-tpng' : '-tsvg';
 
         var umlText = parseUmlText(block.body);
         var re = /@startditaa/
@@ -64,7 +64,7 @@ module.exports = {
               input: umlText
             });
         }
-        
+
         this.log.debug("copying plantUML from tempDir for ", imageName);
         this.output.copyFile(imagePath, "images/puml/" + imageName);
 
