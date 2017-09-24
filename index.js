@@ -66,9 +66,9 @@ module.exports = {
         }
         
         this.log.debug("copying plantUML from tempDir for ", imageName);
-        this.output.copyFile(imagePath,imageName);
+        this.output.copyFile(imagePath, "images/puml/" + imageName);
 
-        return "<img src=\"" + path.join("/", imageName) + "\"/>";
+        return "<img src=\"" + path.join("/images/puml/", imageName) + "\"/>";
       }
     }
   }
