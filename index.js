@@ -8,6 +8,7 @@ var Entities = require('html-entities').XmlEntities;
 var marked = require('marked');
 
 var PLANTUML_JAR = path.join(__dirname, 'vendor/plantuml.jar');
+var DEFAULT_IMAGE_FOLDER = 'images/puml/';
 
 var entities = new Entities();
 
@@ -43,6 +44,7 @@ module.exports = {
         var imageName = hashedImageName(umlText) + defaultFormat;
         this.log.debug("using tempDir ", os.tmpdir());
         var imagePath = path.join(os.tmpdir(), imageName);
+        var imageName = DEFAULT_IMAGE_FOLDER + imageName;
 
         if (fs.existsSync(imagePath)) {
           this.log.info("skipping plantUML image for ", imageName);
@@ -66,9 +68,9 @@ module.exports = {
         }
 
         this.log.debug("copying plantUML from tempDir for ", imageName);
-        this.output.copyFile(imagePath, "images/puml/" + imageName);
+        this.output.copyFile(imagePath, imageName);
 
-        return "<img src=\"" + path.join("/images/puml/", imageName) + "\"/>";
+        return "<img src=\"" + path.join("/", imageName) + "\"/>";
       }
     }
   }
