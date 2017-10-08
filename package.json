@@ -11,7 +11,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec --timeout 15000"
+    "test": "mocha --reporter spec --timeout 25000"
   },
   "keywords": [
     "gitbook",

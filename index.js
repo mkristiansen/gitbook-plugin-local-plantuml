@@ -8,7 +8,7 @@ var Entities = require('html-entities').XmlEntities;
 var marked = require('marked');
 
 var PLANTUML_JAR = path.join(__dirname, 'vendor/plantuml.jar');
-var DEFAULT_IMAGE_FOLDER = '';
+var DEFAULT_IMAGE_FOLDER = '/';
 
 var entities = new Entities();
 
