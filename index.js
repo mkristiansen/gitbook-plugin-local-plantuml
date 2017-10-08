@@ -77,7 +77,7 @@ module.exports = {
         this.log.debug("copying plantUML from tempDir for ", imagePathName);
         this.output.copyFile(cachedImagePath, imagePathName);
 
-        return "<object data=\"" + path.join("/", imagePathName) + "\" type="image/svg+xml" width=100%/>";
+        return "<img src=\"" + path.join("/", imagePathName) + "\"/>";
       }
     }
   }
