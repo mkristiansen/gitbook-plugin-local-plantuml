@@ -12,7 +12,7 @@ describe('Gitbook Plugin - Local PlantUML Rendering', function() {
             .withLocalPlugin(path.join(__dirname, '..'))
             .create()
             .then(function(result) {
-                assert.equal(result[0].content, '<p>This is a diagram:</p>\n<p><img src="84918a9a66a4e75be00a46643eab802f.svg"></p>')
+                assert.equal(result[0].content, '<p>This is a diagram:</p>\n<p><object data="/84918a9a66a4e75be00a46643eab802f.svg" type="image/svg+xml" width="100%"></object></p>')
             });
     });
     it('should correctly replace plantuml block in nested page with img html tag in book root', function() {
@@ -34,7 +34,7 @@ describe('Gitbook Plugin - Local PlantUML Rendering', function() {
             )
             .create()
             .then(function(result) {
-                assert.equal(result.get("nesting/nested.html").content, '<p>This is a diagram:</p>\n<p><img src="../84918a9a66a4e75be00a46643eab802f.svg"></p>')
+                assert.equal(result.get("nesting/nested.html").content, '<p>This is a diagram:</p>\n<p><object data="/84918a9a66a4e75be00a46643eab802f.svg" type="image/svg+xml" width="100%"></object></p>')
             });
     });
     it('should correctly replace plantuml block with img html tag in custom folder', function() {
@@ -51,7 +51,7 @@ describe('Gitbook Plugin - Local PlantUML Rendering', function() {
             .withLocalPlugin(path.join(__dirname, '..'))
             .create()
             .then(function(result) {
-                assert.equal(result[0].content, '<p>This is a diagram:</p>\n<p><img src="images/puml/84918a9a66a4e75be00a46643eab802f.svg"></p>')
+                assert.equal(result[0].content, '<p>This is a diagram:</p>\n<p><object data="/images/puml/84918a9a66a4e75be00a46643eab802f.svg" type="image/svg+xml" width="100%"></object></p>')
             });
     });
 });

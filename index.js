@@ -8,7 +8,7 @@ var Entities = require('html-entities').XmlEntities;
 var marked = require('marked');
 
 var PLANTUML_JAR = path.join(__dirname, 'vendor/plantuml.jar');
-var DEFAULT_IMAGE_FOLDER = './';
+var DEFAULT_IMAGE_FOLDER = '';
 
 var entities = new Entities();
 
@@ -77,7 +77,7 @@ module.exports = {
         this.log.debug("copying plantUML from tempDir for ", imagePathName);
         this.output.copyFile(cachedImagePath, imagePathName);
 
-        return "<img src=\"" + path.join("/", imagePathName) + "\"/>";
+        return "<object data=\"" + path.join("/", imagePathName) + "\"/ type=\"image/svg+xml\" width=100% ></object>";
       }
     }
   }
