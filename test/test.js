@@ -2,8 +2,8 @@ var path = require('path');
 var tester = require('gitbook-tester');
 var assert = require('assert');
 
-describe('PlantUML', function() {
-    it('should correctly replace by img html tag in book root', function() {
+describe('Gitbook Plugin - Local PlantUML Rendering', function() {
+    it('should correctly replace plantuml block with img html tag in book root', function() {
         return tester.builder()
             .withContent('This is a diagram:\n\n{% plantuml %}\nBob->Alice : hello\n{% endplantuml %}')
             .withBookJson({
@@ -12,10 +12,10 @@ describe('PlantUML', function() {
             .withLocalPlugin(path.join(__dirname, '..'))
             .create()
             .then(function(result) {
-                assert.equal(result[0].content, '<p>This is a diagram:</p>\n<p><img src="images/puml/84918a9a66a4e75be00a46643eab802f.svg"></p>')
+                assert.equal(result[0].content, '<p>This is a diagram:</p>\n<p><img src="84918a9a66a4e75be00a46643eab802f.svg"></p>')
             });
     });
-    it('should correctly replace nested page by img html tag in book root', function() {
+    it('should correctly replace plantuml block in nested page with img html tag in book root', function() {
         return tester.builder()
             .withBookJson({
                 plugins: ['local-plantuml']
@@ -34,7 +34,24 @@ describe('PlantUML', function() {
             )
             .create()
             .then(function(result) {
-                assert.equal(result.get("nesting/nested.html").content, '<p>This is a diagram:</p>\n<p><img src="../images/puml/84918a9a66a4e75be00a46643eab802f.svg"></p>')
+                assert.equal(result.get("nesting/nested.html").content, '<p>This is a diagram:</p>\n<p><img src="../84918a9a66a4e75be00a46643eab802f.svg"></p>')
+            });
+    });
+    it('should correctly replace plantuml block with img html tag in custom folder', function() {
+        return tester.builder()
+            .withContent('This is a diagram:\n\n{% plantuml %}\nBob->Alice : hello\n{% endplantuml %}')
+            .withBookJson({
+                plugins: ['local-plantuml'],
+                pluginsConfig: {
+                  local_plantuml: {
+                    image_path: 'images/puml'
+                  }
+                }
+            })
+            .withLocalPlugin(path.join(__dirname, '..'))
+            .create()
+            .then(function(result) {
+                assert.equal(result[0].content, '<p>This is a diagram:</p>\n<p><img src="images/puml/84918a9a66a4e75be00a46643eab802f.svg"></p>')
             });
     });
 });

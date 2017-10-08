@@ -8,7 +8,7 @@ var Entities = require('html-entities').XmlEntities;
 var marked = require('marked');
 
 var PLANTUML_JAR = path.join(__dirname, 'vendor/plantuml.jar');
-var DEFAULT_IMAGE_FOLDER = 'images/puml/';
+var DEFAULT_IMAGE_FOLDER = './';
 
 var entities = new Entities();
 
@@ -31,6 +31,14 @@ module.exports = {
   blocks: {
     plantuml: {
       process: function (block) {
+        var config = this.config.values.pluginsConfig["local_plantuml"];
+        var imagePath = DEFAULT_IMAGE_FOLDER;
+
+				if (config)
+				{
+					imagePath = config.image_path ? config.image_path : DEFAULT_IMAGE_FOLDER;
+				};
+
         var defaultFormat = this.output.name == 'ebook'? '.png' : '.svg';
         var outputFormat = this.output.name == 'ebook'? '-tpng' : '-tsvg';
 
@@ -42,15 +50,14 @@ module.exports = {
         }
 
         var imageName = hashedImageName(umlText) + defaultFormat;
-        this.log.debug("using tempDir ", os.tmpdir());
-        var imagePath = path.join(os.tmpdir(), imageName);
-        var imageName = DEFAULT_IMAGE_FOLDER + imageName;
+        var cachedImagePath = path.join(os.tmpdir(), imageName);
+        var imagePathName = path.join(imagePath, imageName);
 
-        if (fs.existsSync(imagePath)) {
-          this.log.info("skipping plantUML image for ", imageName);
+        if (fs.existsSync(cachedImagePath)) {
+          this.log.info("skipping plantUML image for ", imagePathName);
         }
         else {
-          this.log.info("rendering plantUML image to ", imageName);
+          this.log.info("§rendering plantUML image to ", imagePathName);
 
           var cwd = cwd || process.cwd();
 
@@ -62,15 +69,15 @@ module.exports = {
             ],
             {
               // TODO: Extract stdout to a var and persist with this.output.writeFile
-              stdio: ['pipe', fs.openSync(imagePath, 'w'), 'pipe'],
+              stdio: ['pipe', fs.openSync(cachedImagePath, 'w'), 'pipe'],
               input: umlText
             });
         }
 
-        this.log.debug("copying plantUML from tempDir for ", imageName);
-        this.output.copyFile(imagePath, imageName);
+        this.log.debug("copying plantUML from tempDir for ", imagePathName);
+        this.output.copyFile(cachedImagePath, imagePathName);
 
-        return "<img src=\"" + path.join("/", imageName) + "\"/>";
+        return "<object data=\"" + path.join("/", imagePathName) + "\" type="image/svg+xml" width=100%/>";
       }
     }
   }
